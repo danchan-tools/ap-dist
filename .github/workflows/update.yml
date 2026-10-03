@@ -1,0 +1,58 @@
+# ===================================================================
+# AutoPunch を更新するボタン
+#
+# 自分のリポジトリの［Actions］→「AutoPunch を更新する」→［Run workflow］で動きます。
+# 配布元（https://github.com/danchan-tools/ap-dist）の新しい版を取り込み、
+# 自分のリポジトリの main に入れます。
+# main が変わると、Vercel が自動で公開し直します。
+#
+# 🔴 このファイルは書き換えないでください。
+#    書き換えると、次の更新が取り込めなくなることがあります。
+# ===================================================================
+name: AutoPunch を更新する
+
+on:
+  workflow_dispatch:
+
+# 取り込んだ版を、自分のリポジトリに書き込むため
+permissions:
+  contents: write
+
+jobs:
+  update:
+    # 配布元そのものでは動かさない
+    if: github.repository != 'danchan-tools/ap-dist'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 自分のリポジトリを読み込む
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: 配布元の新しい版を取り込む
+        env:
+          UPSTREAM: https://github.com/danchan-tools/ap-dist.git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch "$UPSTREAM" main
+
+          if git merge-base --is-ancestor FETCH_HEAD HEAD; then
+            echo "✅ もう最新です。取り込むものはありません。"
+            exit 0
+          fi
+
+          # このフォルダ（.github/workflows/）が変わる更新は、ボタンでは書き込めない（GitHub の決まり）
+          base="$(git merge-base HEAD FETCH_HEAD || true)"
+          if [ -n "$base" ] && ! git diff --quiet "$base" FETCH_HEAD -- .github/workflows/; then
+            echo "::error::この更新は、ボタンでは取り込めません。配布元の CHANGELOG.md に書いてある手順で取り込んでください。"
+            exit 1
+          fi
+
+          if ! git merge --no-edit FETCH_HEAD; then
+            echo "::error::取り込めませんでした。自分で書き換えたファイルと、配布元の更新がぶつかった可能性があります。この画面の写真を AI に貼って聞いてください。"
+            exit 1
+          fi
+
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          echo "✅ 取り込みました。Vercel が自動で公開し直します（1〜2分）。"

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "AutoPunch 転記",
+  "version": "0.11.2",
+  "description": "AutoPunch の勤務表を、報告サイトの作業報告書に流し込む。保存ボタンは押さない。",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://platform.levtech.jp/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AutoPunch 転記"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://platform.levtech.jp/*"],
+      "js": ["levtech-screens.js", "levtech.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

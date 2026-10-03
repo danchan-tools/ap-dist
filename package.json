@@ -1,0 +1,41 @@
+{
+  "name": "autopunch",
+  "version": "0.11.2",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "typecheck": "next typegen && tsc --noEmit",
+    "check:words": "node scripts/check-forbidden-words.mjs",
+    "check:components": "node scripts/check-nested-components.mjs",
+    "check": "npm run typecheck && npm run lint && npm run check:components && npm test && npm run check:words"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
+    "@neondatabase/serverless": "^1.1.0",
+    "exceljs": "^4.4.0",
+    "lucide-react": "^1.28.0",
+    "next": "16.3.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.8",
+    "jsdom": "^29.1.1",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  }
+}

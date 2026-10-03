@@ -1,0 +1,30 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+
+.env
+.env.local
+.env*.local
+# .env.example（値が空の見本）だけは、あえて Git に上げる
+
+# Vercel / TypeScript
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+/coverage
+
+*.log
+npm-debug.log*
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 実際の勤怠データは絶対にコミットしない
+*.xlsx
+*.xls
+*.csv
+/data/
+/tmp/

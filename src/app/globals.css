@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   配色は prototype/index.html の tailwind.config をそのまま移したもの。
+   モックアップ・プロトタイプ・発表資料と同じ色に揃える
+   （02_基本設計/01_画面遷移・ユーザーフロー.md §5「色」）。
+   ------------------------------------------------------------------ */
+@theme {
+  --color-ads-bg: #ffffff;
+  --color-ads-surface: #f8fafc;
+  --color-ads-hover: #f1f5f9;
+  --color-ads-border: #e2e8f0;
+  --color-ads-accent: #3b82f6;
+  --color-ads-accent-light: #2563eb;
+
+  /* ------------------------------------------------------------------
+     AI（F-10）だけの色。2026-08-06 追加。
+
+     🔴 青（accent）と分ける理由。
+        青は「表を操作するボタン」（出力へ／営業日すべてに反映する／保存）。
+        AIは押すと**必ず確認画面を挟む**という、性質の違う入口。
+        同じ色だと、同じ重さのボタンに見える。
+
+     📌 紫にした理由。
+        ① 設計書の図（02_機能一覧.md）で、F-10 をすでに紫で描いている。
+           発表資料と実物の色が揃う
+        ② 緑は「良い状態（増額・範囲内・OK）」に使っているので、意味が混ざる
+        ③ 白い画面からの浮き具合が、緑 2.5 に対して紫 4.2。
+           中の白いアイコンが読める最低ラインは 3.0
+     ------------------------------------------------------------------ */
+  --color-ads-ai: #8b5cf6;
+  --color-ads-ai-dark: #7c3aed;
+  --color-ads-text: #1e293b;
+  --color-ads-muted: #64748b;
+  --color-ads-dim: #94a3b8;
+  --color-ads-positive: #10b981;
+  --color-ads-negative: #ef4444;
+  --color-ads-warning: #f59e0b;
+
+  --font-sans: var(--font-noto-sans-jp), "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
+}
+
+/* ダークモードは使わない。プロトタイプ・モックアップと見た目を揃えるため */
