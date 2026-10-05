@@ -33,8 +33,6 @@ jobs:
         env:
           UPSTREAM: https://github.com/danchan-tools/ap-dist.git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git fetch "$UPSTREAM" main
 
           if git merge-base --is-ancestor FETCH_HEAD HEAD; then
@@ -49,7 +47,12 @@ jobs:
             exit 1
           fi
 
-          if ! git merge --no-edit FETCH_HEAD; then
+          # 取り込んだ記録は、ボタンを押した人の名前で作る（配布元の記録をそのまま先頭にしない）
+          # Vercel の無料プランは、持ち主以外が書いた記録を公開しないことがあるため
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+
+          if ! git merge --no-ff --no-edit -m "AutoPunch を更新した（配布元の新しい版を取り込んだ）" FETCH_HEAD; then
             echo "::error::取り込めませんでした。自分で書き換えたファイルと、配布元の更新がぶつかった可能性があります。この画面の写真を AI に貼って聞いてください。"
             exit 1
           fi
