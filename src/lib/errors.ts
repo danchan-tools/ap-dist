@@ -30,6 +30,20 @@ export const ERROR_CODES = {
 
 export type ErrorCode = keyof typeof ERROR_CODES;
 
+/**
+ * 画面を開けなかったとき（LoadFailed）に出す「やること」（I-9・2026-10-07）。
+ * E-203・E-204 は待っても直らないので、番号ごとに次の一手を出す。
+ * 📌 手順書の章の名前を書いているので、手順書の章を変えたら、ここもそろえる。
+ */
+export const LOAD_FAILED_ACTIONS: Partial<Record<ErrorCode, string>> = {
+  "E-201": "Neon が動いているかと、Vercel の DATABASE_URL を確かめてから、F5 を押してください",
+  "E-203": "Vercel の環境変数を入れて、公開し直してください（手順書の「7. もう一度公開する」）",
+  "E-204": "手順書の「6. データベースの SQL を流す」を済ませてから、F5 を押してください",
+};
+
+/** LOAD_FAILED_ACTIONS に無い番号のときの「やること」 */
+export const LOAD_FAILED_FALLBACK = "少し待ってから F5 を押してください（直らなければ問い合わせてください）";
+
 /** API が失敗したときに返す形。code と ref は、番号を付ける失敗のときだけ入る */
 export type FailureBody = { error: string; code?: ErrorCode; ref?: string };
 

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AutoPunch 転記",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "AutoPunch の勤務表を、報告サイトの作業報告書に流し込む。保存ボタンは押さない。",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": [

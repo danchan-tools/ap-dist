@@ -6,10 +6,13 @@
 //
 // 📌 ⚙設定が開けないので、バージョンもここに出す（問い合わせに書いてもらう）。
 // 🔴 エラーの中身（接続先・SQL）は出さない。
+// 🆕 I-9（2026-10-07）：番号ごとの「やること」を、見出しつきの枠で出す。
+//    E-203・E-204 は待っても直らないので、どの番号でも「少し待ってから F5」は出さない。
+//    見た目は、段木さんが本物の画面で撮った3案から選んだ（枠の案）。
 // ===================================================================
 
 import { AlertTriangle } from "lucide-react";
-import { ERROR_CODES, withCode, type ErrorCode } from "@/lib/errors";
+import { ERROR_CODES, LOAD_FAILED_ACTIONS, LOAD_FAILED_FALLBACK, withCode, type ErrorCode } from "@/lib/errors";
 import { formatAppVersion } from "@/lib/version";
 
 export default function LoadFailed({ code, inquiry }: { code: ErrorCode; inquiry: string }) {
@@ -22,9 +25,12 @@ export default function LoadFailed({ code, inquiry }: { code: ErrorCode; inquiry
         <h1 className="text-lg font-bold text-slate-900">{withCode("画面を開けませんでした", code, inquiry)}</h1>
         <p className="mt-2 text-sm text-ads-muted leading-relaxed">{ERROR_CODES[code]}</p>
       </div>
+      <div className="w-full max-w-md rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left">
+        <div className="text-xs font-bold text-amber-800">やること</div>
+        <div className="mt-1 text-sm text-slate-900 leading-relaxed">{LOAD_FAILED_ACTIONS[code] ?? LOAD_FAILED_FALLBACK}</div>
+      </div>
       <div className="text-xs text-ads-muted leading-relaxed">
         <div>番号ごとの意味と、やることは ERRORS.md にあります</div>
-        <div>少し待ってから、ページを読み込み直してください（F5）</div>
         <div>
           問い合わせるときは、この番号と {formatAppVersion()} を書いてください
         </div>
