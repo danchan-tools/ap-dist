@@ -70,6 +70,16 @@ export default function DayModal({
    */
   const [confirmClear, setConfirmClear] = useState(false);
 
+  /**
+   * 終業の欄に入っているか（I-10・2026-10-07）。
+   *
+   * 打っている途中の「2」「20」も「時:分」の形ではないので、そのままだと
+   * 黄色の「終業の形が正しくありません」が一瞬出ていた（B-9 の残り）。
+   * 欄に入っている間は形の注意だけを出さず、離れて、まだ形が違えば出す。
+   * 見た目は、段木さんが本物の画面で撮った3案から選んだ。
+   */
+  const [endEditing, setEndEditing] = useState(false);
+
   const isWork = kind === "勤務";
 
   /**
@@ -92,7 +102,8 @@ export default function DayModal({
   // その日に関する警告だけを、ここに出す
   let warning = "";
   if (isWork && endAt !== "" && !END_TIME_RE.test(endAt)) {
-    warning = "終業の形が正しくありません。00:00〜29:59 の範囲で「時:分」で入力してください（例：18:30 ／ 26:00）。";
+    // 🔴 欄に入っている間は出さない（I-10）。ほかの注意にも進ませない（形が違う間は計算できないため）
+    if (!endEditing) warning = "終業の形が正しくありません。00:00〜29:59 の範囲で「時:分」で入力してください（例：18:30 ／ 26:00）。";
   } else if (isWork && c.error) {
     warning =
       (toMin(endAt) ?? 0) <= (toMin(startAt) ?? 0)
@@ -204,7 +215,7 @@ export default function DayModal({
               {/* 🔴 時計マークを終業とそろえるため、ブラウザの絵柄は使わない（TimeInput 参照） */}
               <TimeInput value={startAt} disabled={!isWork} className={field} onChange={setStartAt} />
             </label>
-            <label className="flex flex-col gap-1">
+            <label className="flex flex-col gap-1" onFocus={() => setEndEditing(true)} onBlur={() => setEndEditing(false)}>
               <span className="text-[11px] font-bold text-ads-muted">終業</span>
               <EndTimeInput value={endAt} disabled={!isWork} className={field} onChange={setEndAt} />
             </label>
